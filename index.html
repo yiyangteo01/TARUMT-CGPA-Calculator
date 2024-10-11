@@ -121,9 +121,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Course</th>
-                                <th>Credits</th>
-                                <th>Grade</th>
+                                <th style="color: grey;">Course (optional)</th>
+                                <th>Credits <span style="color: red;">*</span></th>
+                                <th>Grade <span style="color: red;">*</span></th>
+                                <th>Grade Point</th>
                                 <th>Remove</th>
                             </tr>
                         </thead>
@@ -132,7 +133,7 @@
                                 <td><input type="text" class="form-control" placeholder="Course name"></td>
                                 <td><input type="number" class="form-control credit" placeholder="Credits" min="0" onchange="calculateGpa()"></td>
                                 <td>
-                                    <select class="form-select grade" onchange="calculateGpa()">
+                                    <select class="form-select grade" onchange="calculateGpa()" onmouseover="showGradeValue(this)">
                                         <option disabled selected value="">Grade</option>
                                         <option value="4.0000">A+</option>
                                         <option value="4.0000">A</option>
@@ -145,6 +146,95 @@
                                         <option value="0.0000">F</option>
                                     </select>
                                 </td>
+                                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" placeholder="Course name"></td>
+                                <td><input type="number" class="form-control credit" placeholder="Credits" min="0" onchange="calculateGpa()"></td>
+                                <td>
+                                    <select class="form-select grade" onchange="calculateGpa()" onmouseover="showGradeValue(this)">
+                                        <option disabled selected value="">Grade</option>
+                                        <option value="4.0000">A+</option>
+                                        <option value="4.0000">A</option>
+                                        <option value="3.6700">A-</option>
+                                        <option value="3.3300">B+</option>
+                                        <option value="3.0000">B</option>
+                                        <option value="2.6700">B-</option>
+                                        <option value="2.3300">C+</option>
+                                        <option value="2.0000">C</option>
+                                        <option value="0.0000">F</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" placeholder="Course name"></td>
+                                <td><input type="number" class="form-control credit" placeholder="Credits" min="0" onchange="calculateGpa()"></td>
+                                <td>
+                                    <select class="form-select grade" onchange="calculateGpa()" onmouseover="showGradeValue(this)">
+                                        <option disabled selected value="">Grade</option>
+                                        <option value="4.0000">A+</option>
+                                        <option value="4.0000">A</option>
+                                        <option value="3.6700">A-</option>
+                                        <option value="3.3300">B+</option>
+                                        <option value="3.0000">B</option>
+                                        <option value="2.6700">B-</option>
+                                        <option value="2.3300">C+</option>
+                                        <option value="2.0000">C</option>
+                                        <option value="0.0000">F</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" placeholder="Course name"></td>
+                                <td><input type="number" class="form-control credit" placeholder="Credits" min="0" onchange="calculateGpa()"></td>
+                                <td>
+                                    <select class="form-select grade" onchange="calculateGpa()" onmouseover="showGradeValue(this)">
+                                        <option disabled selected value="">Grade</option>
+                                        <option value="4.0000">A+</option>
+                                        <option value="4.0000">A</option>
+                                        <option value="3.6700">A-</option>
+                                        <option value="3.3300">B+</option>
+                                        <option value="3.0000">B</option>
+                                        <option value="2.6700">B-</option>
+                                        <option value="2.3300">C+</option>
+                                        <option value="2.0000">C</option>
+                                        <option value="0.0000">F</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" placeholder="Course name"></td>
+                                <td><input type="number" class="form-control credit" placeholder="Credits" min="0" onchange="calculateGpa()"></td>
+                                <td>
+                                    <select class="form-select grade" onchange="calculateGpa()" onmouseover="showGradeValue(this)">
+                                        <option disabled selected value="">Grade</option>
+                                        <option value="4.0000">A+</option>
+                                        <option value="4.0000">A</option>
+                                        <option value="3.6700">A-</option>
+                                        <option value="3.3300">B+</option>
+                                        <option value="3.0000">B</option>
+                                        <option value="2.6700">B-</option>
+                                        <option value="2.3300">C+</option>
+                                        <option value="2.0000">C</option>
+                                        <option value="0.0000">F</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
                                 </td>
@@ -244,6 +334,7 @@
                         <option value="0.0000">F</option>
                     </select>
                 </td>
+                <td><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0"></td>
                 <td class="text-center">
                     <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
                 </td>
@@ -257,35 +348,39 @@
         }
 
         function calculateGpa() {
-            let totalCredits = 0;
-            let totalPoints = 0;
+        let totalCredits = 0;
+        let totalPoints = 0;
 
-            const creditsInputs = document.querySelectorAll('.credit');
-            const gradeInputs = document.querySelectorAll('.grade');
+        const creditsInputs = document.querySelectorAll('.credit');
+        const gradeInputs = document.querySelectorAll('.grade');
+        const gradePointsInputs = document.querySelectorAll('.grade-point');
 
-            creditsInputs.forEach((creditInput, index) => {
-                const credits = parseFloat(creditInput.value) || 0;
-                const grade = parseFloat(gradeInputs[index].value) || 0;
+        creditsInputs.forEach((creditInput, index) => {
+            const credits = parseFloat(creditInput.value) || 0;
+            const grade = parseFloat(gradeInputs[index].value) || 0;
 
-                totalCredits += credits;
-                totalPoints += credits * grade;
-            });
+            totalCredits += credits;
+            totalPoints += credits * grade;
 
-            const semesterGPA = totalCredits ? (totalPoints / totalCredits).toFixed(2) : 0;
-            const currentCgpa = parseFloat(document.getElementById('currentCgpa').value) || 0;
-            const completedCredits = parseFloat(document.getElementById('creditsCompleted').value) || 0;
+            // Update the grade-point input field
+            gradePointsInputs[index].value = grade.toFixed(4);
+        });
 
-            document.getElementById('semesterCredits').innerText = totalCredits;
-            document.getElementById('gpa').innerText = semesterGPA;
-            document.getElementById('totalCredits').innerText = completedCredits + totalCredits;
+        const semesterGPA = totalCredits ? (totalPoints / totalCredits).toFixed(4) : 0;
+        const currentCgpa = parseFloat(document.getElementById('currentCgpa').value) || 0;
+        const completedCredits = parseFloat(document.getElementById('creditsCompleted').value) || 0;
 
-            const cgpa = (currentCgpa * completedCredits + semesterGPA * totalCredits) /
-                (completedCredits + totalCredits || 1); // Prevent division by zero
+        document.getElementById('semesterCredits').innerText = totalCredits;
+        document.getElementById('gpa').innerText = semesterGPA;
+        document.getElementById('totalCredits').innerText = completedCredits + totalCredits;
 
-            document.getElementById('cgpa').innerText = cgpa.toFixed(2);
-            document.getElementById('semesterGPA').innerText = `(${totalPoints.toFixed(2)} / ${totalCredits} = ${semesterGPA})`;
-            document.getElementById('CGPA').innerText = `(${(currentCgpa * completedCredits + semesterGPA * totalCredits).toFixed(2)} / ${completedCredits + totalCredits} = ${cgpa.toFixed(2)})`;
-        }
+        const cgpa = (currentCgpa * completedCredits + semesterGPA * totalCredits) /
+            (completedCredits + totalCredits || 1); // Prevent division by zero
+
+        document.getElementById('cgpa').innerText = cgpa.toFixed(4);
+        document.getElementById('semesterGPA').innerText = `(${totalPoints.toFixed(4)} / ${totalCredits} = ${semesterGPA})`;
+        document.getElementById('CGPA').innerText = `(${(currentCgpa * completedCredits + semesterGPA * totalCredits).toFixed(4)} / ${completedCredits + totalCredits} = ${cgpa.toFixed(4)})`;
+    }
     </script>
 </body>
 </html>
