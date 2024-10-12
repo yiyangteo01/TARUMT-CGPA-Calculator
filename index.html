@@ -114,6 +114,11 @@
             /* Horizontal line */
         }
 
+        input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
         /* Adjust the layout for smaller screens */
         @media (max-width: 768px) {
 
@@ -155,18 +160,38 @@
                 <div class="card">
                     <div class="card-body">
                         <form id="cgpa-form">
-                            <div class="mb-3 row">
-                                <div class="col-md-6">
+                            <div class="mb-3 row align-items-center">
+                                <!-- Group 1: Current CGPA and Credits Completed -->
+                                <div class="col-md-4">
                                     <label for="currentCgpa" class="form-label">Current CGPA:</label>
                                     <input type="number" id="currentCgpa" class="form-control" step="0.01" min="0"
-                                        placeholder="Eg. 3.0000" onchange="calculateGpa()" />
+                                        max="4.00" placeholder="Eg. 3.0000" onchange="calculateGpa()" />
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <label for="creditsCompleted" class="form-label">Credits Completed:</label>
                                     <input type="number" id="creditsCompleted" class="form-control" step="1" min="0"
                                         placeholder="Eg. 60" onchange="calculateGpa()" />
                                 </div>
+
+                                <!-- Group 2: COCU Option and Conditional Input -->
+                                <div class="col-md-2 d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="cocu" class="form-check-input"
+                                            onchange="toggleCocuInput()" />
+                                        <label for="cocu" class="form-check-label ms-1">COCU?</label>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional COCU Credit Hours Input (appears when checkbox is checked) -->
+                                <div class="col-md-2 d-none" id="cocuCreditHoursContainer">
+                                    <label for="cocuCredits" class="form-label">Credit:</label>
+                                    <input type="number" id="cocuCredits" class="form-control" step="1" min="0"
+                                        value="2" onchange="calculateGpa()" />
+                                </div>
                             </div>
+
+                            <!-- Accordian () -->
 
                             <!-- Error message display -->
                             <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
@@ -381,58 +406,72 @@
             let totalGradePoints = 0;
             let semesterCredits = 0;
             let gradePoints = 0;
-            let tcgpa = 0;
+            let cocuCredits = 0;
+            let completedCredits = parseFloat(document.getElementById("creditsCompleted").value) || 0;
 
             const creditInputs = document.querySelectorAll(".credit");
             const gradeInputs = document.querySelectorAll(".grade");
             const gradePointInputs = document.querySelectorAll(".grade-point");
 
+            // Loop through each course row to calculate semester credits and grade points
             for (let i = 0; i < creditInputs.length; i++) {
                 const credits = parseFloat(creditInputs[i].value) || 0;
                 const gradePoint = parseFloat(gradeInputs[i].value) || 0;
                 const currentGradePoint = credits * gradePoint;
 
-                totalCredits += credits;
-                totalGradePoints += currentGradePoint;
+                totalCredits += credits; // Add to total semester credits
+                totalGradePoints += currentGradePoint; // Add to total semester grade points
                 gradePoints += gradePoint;
-                semesterCredits += credits;
+                semesterCredits += credits; // Count towards semester credits
 
-                // Update the grade point input field
+                // Update the grade point input field for each course
                 gradePointInputs[i].value = gradePoint.toFixed(4);
             }
 
-            const gpa =
-                totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(4) : 0;
-            const currentCgpa =
-                parseFloat(document.getElementById("currentCgpa").value) || 0;
-            const completedCredits =
-                parseFloat(document.getElementById("creditsCompleted").value) || 0;
+            // Calculate GPA for the current semester
+            const gpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(4) : 0;
+
+            // Current CGPA and Completed Credits (without COCU credits)
+            const currentCgpa = parseFloat(document.getElementById("currentCgpa").value) || 0;
+
+            // Handle COCU credits (exclude them from GPA/CGPA calculation)
+            const cocuCheckbox = document.getElementById("cocu");
+            if (cocuCheckbox.checked) {
+                cocuCredits = parseFloat(document.getElementById("cocuCredits").value) || 0;
+                completedCredits -= cocuCredits; // Exclude COCU credits from total
+            }
+
+            // Total grade points including previous completed credits
+            totalGradePoints += currentCgpa * completedCredits;
+            totalCredits += completedCredits; // Include previously completed credits in total
 
             // Calculate CGPA
-            const cgpa =
-                completedCredits > 0
-                    ? (
-                        (currentCgpa * completedCredits + gpa * semesterCredits) /
-                        (completedCredits + semesterCredits)
-                    ).toFixed(4)
-                    : 0;
+            const cgpa = completedCredits + semesterCredits > 0
+                ? (totalGradePoints / totalCredits).toFixed(4)
+                : 0;
 
-            // Update the results
-            document.getElementById("semesterCredits").innerText = semesterCredits
+            // Update the results in the UI
+            document.getElementById("semesterCredits").innerText = semesterCredits;
             document.getElementById("gpa").innerText = gpa || "0.0000";
-            document.getElementById("totalCredits").innerText =
-                (completedCredits + semesterCredits)
+            document.getElementById("totalCredits").innerText = completedCredits + semesterCredits + cocuCredits;
             document.getElementById("cgpa").innerText = cgpa || "0.0000";
-            document.getElementById(
-                "semesterGPA"
-            ).innerText = `${totalCredits} * ${gpa} / ${totalCredits} = ${gpa}`
-            document.getElementById(
-                "CGPA"
-            ).innerText = `${currentCgpa} * ${completedCredits} + ${gpa} * ${semesterCredits} / ${completedCredits + semesterCredits
-            } = ${cgpa}`
+
+            // Show CGPA calculation with COCU credits excluded properly
+            let cocuInfo = cocuCredits > 0
+                ? ` (COCU Credits Excluded)`
+                : '';
+
+            // Show calculation steps (including COCU credit exclusion)
+            document.getElementById("semesterGPA").innerText =
+                `${totalCredits} ${cocuInfo} * ${gpa} / ${totalCredits} ${cocuInfo} = ${gpa}`;
+
+            document.getElementById("CGPA").innerText =
+                `${currentCgpa} * ${completedCredits} ${cocuInfo} + ${gpa} * ${semesterCredits} / (${completedCredits + semesterCredits}) = ${cgpa}`;
 
             validateFields();
         }
+
+
 
         function addCourse() {
             const courseTableBody = document.getElementById("course-table-body");
@@ -521,6 +560,21 @@
                 hideError(); // Hide error message if all fields are filled
             }
         }
+
+        function toggleCocuInput() {
+            const cocuCheckbox = document.getElementById('cocu');
+            const cocuCreditHoursContainer = document.getElementById('cocuCreditHoursContainer');
+
+            if (cocuCheckbox.checked) {
+                cocuCreditHoursContainer.classList.remove('d-none');  // Show the input field
+            } else {
+                cocuCreditHoursContainer.classList.add('d-none');  // Hide the input field
+                document.getElementById('cocuCredits').value = '2'; // Clear the input value
+            }
+
+            calculateGpa();  // Update GPA whenever the checkbox is toggled
+        }
+
     </script>
 </body>
 
