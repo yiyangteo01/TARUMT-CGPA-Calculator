@@ -159,12 +159,12 @@
                                 <div class="col-md-6">
                                     <label for="currentCgpa" class="form-label">Current CGPA:</label>
                                     <input type="number" id="currentCgpa" class="form-control" step="0.01" min="0"
-                                        placeholder="Eg. 3.0000" />
+                                        placeholder="Eg. 3.0000" onchange="calculateGpa()" />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="creditsCompleted" class="form-label">Credits Completed:</label>
                                     <input type="number" id="creditsCompleted" class="form-control" step="1" min="0"
-                                        placeholder="Eg. 60" />
+                                        placeholder="Eg. 60" onchange="calculateGpa()" />
                                 </div>
                             </div>
 
@@ -381,6 +381,7 @@
             let totalGradePoints = 0;
             let semesterCredits = 0;
             let gradePoints = 0;
+            let tcgpa = 0;
 
             const creditInputs = document.querySelectorAll(".credit");
             const gradeInputs = document.querySelectorAll(".grade");
@@ -503,11 +504,11 @@
 
                 // Check if either credit or grade is empty but the other is filled
                 if ((creditInput.value === '' && gradeSelect.value !== '')) {
-                    row_number = row.rowIndex; 
+                    row_number = row.rowIndex;
                     isCreditEmpty = true;
                 } else if (creditInput.value !== '' && gradeSelect.value === '') {
                     isGradeEmpty = true;
-                    row_number = row.rowIndex; 
+                    row_number = row.rowIndex;
                 }
             });
 
