@@ -10,6 +10,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <!-- Custom CSS -->
     <style>
         body {
@@ -165,6 +168,8 @@
                                 </div>
                             </div>
 
+                            <!-- Error message display -->
+                            <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
                             <!-- Courses Input -->
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="courseTable">
@@ -173,7 +178,7 @@
                                             <th class="course-column" style="width: 30%; color: grey">
                                                 Course (optional)
                                             </th>
-                                            <th style="width: 15%">
+                                            <th style="width: 20%">
                                                 Credits <span style="color: red">*</span>
                                             </th>
                                             <th style="width: 20%">
@@ -182,15 +187,13 @@
                                             <th class="grade-point-column" style="width: 20%">
                                                 Grade Point
                                             </th>
-                                            <th style="width: 15%">Remove</th>
+                                            <th style="width: 10%">Remove</th>
                                         </tr>
                                     </thead>
                                     <tbody id="course-table-body">
                                         <!-- Course Rows will be added here -->
                                     </tbody>
                                 </table>
-                                <!-- Error message display -->
-                                <div id="error-message" style="color: red;"></div>
                             </div>
                             <!-- Add Course Button -->
                             <div class="d-flex justify-content-end">
@@ -452,7 +455,7 @@
                     </td>
                     <td class="grade-point-column"><input type="text" class="form-control grade-point" placeholder="Grade Point" readonly value="0.0000"></td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `;
@@ -475,26 +478,46 @@
         // Call the initialize function on page load
         window.onload = initializeTable;
 
+        function showError(message) {
+            var errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.innerHTML = message;  // Set the error message
+            errorMessageDiv.classList.remove('d-none');  // Show the alert
+        }
+
+        function hideError() {
+            var errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.classList.add('d-none');  // Hide the alert
+        }
+
         function validateFields() {
             const rows = document.querySelectorAll('#courseTable tbody tr');
-            let isAnyFieldEmpty = false;
+            let isCreditEmpty = false;
+            let isGradeEmpty = false;
+
 
             rows.forEach(row => {
+                // Get row numbers
+
                 const creditInput = row.querySelector('.credit');
                 const gradeSelect = row.querySelector('.grade');
 
-                // Check if the Credits or Grade field is empty
-                if (!creditInput.value || gradeSelect.value === '') {
-                    isAnyFieldEmpty = true; // Set flag if any field is empty
+                // Check if either credit or grade is empty but the other is filled
+                if ((creditInput.value === '' && gradeSelect.value !== '')) {
+                    row_number = row.rowIndex; 
+                    isCreditEmpty = true;
+                } else if (creditInput.value !== '' && gradeSelect.value === '') {
+                    isGradeEmpty = true;
+                    row_number = row.rowIndex; 
                 }
             });
 
             // Display error message if any field is empty
-            if (isAnyFieldEmpty) {
-                document.getElementById('error-message').textContent = 'Please fill in all fields for each course.';
+            if (isCreditEmpty) {
+                showError('Please fill in the credits in' + ' row ' + row_number);
+            } else if (isGradeEmpty) {
+                showError('Please fill in the grades in' + ' row ' + row_number);
             } else {
-                document.getElementById('error-message').textContent = ''; // Clear error message
-                calculateGpa(); // Call GPA calculation if all fields are filled
+                hideError(); // Hide error message if all fields are filled
             }
         }
     </script>
